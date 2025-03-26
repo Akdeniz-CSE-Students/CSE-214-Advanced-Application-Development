@@ -1,0 +1,49 @@
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" type="email" formControlName="email">
+    <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+      <span *ngIf="signupForm.get('email')?.errors?.['required']">Email zorunludur.</span>
+      <span *ngIf="signupForm.get('email')?.errors?.['email']">Geçerli bir email girin.</span>
+    </div>
+  </div>
+  <div>
+    <label for="password">Şifre:</label>
+    <input id="password" type="password" formControlName="password">
+    <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+      <span *ngIf="signupForm.get('password')?.errors?.['required']">Şifre zorunludur.</span>
+      <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Şifre en az 6 karakter olmalıdır.</span>
+    </div>
+  </div>
+  <div>
+    <button type="button" (click)="toggleOptionalEmail()">
+      {{ showOptionalEmail ? 'Opsiyonel Email Gizle' : 'Opsiyonel Email Ekle' }}
+    </button>
+    <div *ngIf="showOptionalEmail">
+      <label for="optionalEmail">Opsiyonel Email:</label>
+      <input id="optionalEmail" type="email" formControlName="optionalEmail">
+      <div *ngIf="signupForm.get('optionalEmail')?.invalid && signupForm.get('optionalEmail')?.touched">
+        <span *ngIf="signupForm.get('optionalEmail')?.errors?.['email']">Geçerli bir email girin.</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <label>Şehir Seçin:</label>
+    <div *ngFor="let city of cities; let i = index">
+      <input type="radio" [id]="'city' + i" [value]="city" formControlName="city" (change)="onCityChange($event)">
+      <label [for]="'city' + i">{{ city }}</label>
+    </div>
+    <div>
+      <input type="radio" id="other" value="other" formControlName="city" (change)="onCityChange($event)">
+      <label for="other">Diğer</label>
+    </div>
+    <div *ngIf="signupForm.get('city')?.value === 'other'">
+      <label for="otherCity">Diğer Şehir:</label>
+      <input id="otherCity" type="text" formControlName="otherCity">
+    </div>
+  </div>
+  <button type="submit" [disabled]="signupForm.invalid">Kayıt Ol</button>
+</form>
+<div>
+   hesabınız var mı <a routerLink="/login">giriş Yap</a>
+</div>

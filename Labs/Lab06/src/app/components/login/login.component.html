@@ -1,0 +1,24 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" type="email" formControlName="email">
+    <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+      <span *ngIf="loginForm.get('email')?.errors?.['required']">Email zorunludur.</span>
+      <span *ngIf="loginForm.get('email')?.errors?.['email']">Geçerli bir email girin.</span>
+    </div>
+  </div>
+  <div>
+    <label for="password">Şifre:</label>
+    <input id="password" type="password" formControlName="password">
+    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+      <span *ngIf="loginForm.get('password')?.errors?.['required']">Şifre zorunludur.</span>
+    </div>
+  </div>
+  <div *ngIf="loginError" style="color: red;">
+    email veya şifre hatalı
+  </div>
+  <button type="submit" [disabled]="loginForm.invalid">Giriş Yap</button>
+</form>
+<div>
+  Hesabınız yok mu <a routerLink="/signup">Kayıt Ol</a>
+</div>

@@ -1,0 +1,10 @@
+<div *ngIf="user">
+  <h1>Welcome, {{ user.email }}</h1>
+  <p>Email: {{ user.email }}</p>
+  <p>Şehir: {{ user.city }}</p>
+  <button (click)="logout()">Çıkış Yap</button>
+</div>
+<div *ngIf="!user">
+  <p>Kullanıcı bilgisi bulunamadı.</p>
+  <a routerLink="/login">Giriş Yap</a>
+</div>
