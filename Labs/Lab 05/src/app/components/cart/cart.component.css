@@ -1,0 +1,17 @@
+.cart {
+  margin-top: 20px;
+  border-top: 2px solid #ccc;
+  padding-top: 10px;
+}
+
+.purchase-section {
+  margin-top: 10px;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}

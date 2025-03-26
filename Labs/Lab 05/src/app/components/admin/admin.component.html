@@ -1,0 +1,44 @@
+<div class="admin-panel">
+    <h2>User Management</h2>
+
+    <div class="navigation-buttons">
+        <button (click)="goToShoppingList()" class="btn btn-secondary">
+            Go to Shopping List
+        </button>
+    </div>
+
+    <div class="add-user-form">
+        <h3>Add New User</h3>
+        <div class="form-group">
+            <input type="text" [(ngModel)]="newUser.username" placeholder="Username" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="password" [(ngModel)]="newUser.password" placeholder="Password" class="form-control">
+        </div>
+        <button (click)="addUser()" class="btn btn-primary">Add User</button>
+    </div>
+
+    <div class="user-list">
+        <h3>User List</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.username}}</td>
+                    <td>
+                        <button (click)="removeUser(user.username)"
+                                [disabled]="user.username === 'admin'"
+                                class="btn btn-danger">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

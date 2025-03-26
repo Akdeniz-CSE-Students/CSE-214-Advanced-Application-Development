@@ -1,0 +1,246 @@
+/*
+ * Ana container stil tanımları
+ * - max-width ile maksimum genişlik sınırlanır
+ * - margin: 2rem auto ile yatayda ortalanır ve üst-alttan boşluk verilir
+ * - padding ile iç boşluk verilir
+ * - background-color ile arka plan rengi belirlenir
+ * - border-radius ile köşeler yuvarlatılır
+ * - box-shadow ile gölge efekti verilir
+ */
+.todo-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    text-align: center;
+}
+
+/*
+ * Ana başlık stili
+ * - color ile yazı rengi belirlenir
+ * - margin-bottom ile alt boşluk verilir
+ * - font-size ile yazı boyutu ayarlanır
+ */
+h1 {
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/*
+ * Kart container stili
+ * - background-color ile arka plan rengi belirlenir
+ * - border ile kenarlık eklenir
+ * - border-radius ile köşeler yuvarlatılır
+ * - padding ile iç boşluk verilir
+ * - box-shadow ile gölge efekti verilir
+ */
+.todo-card {
+    background-color: #faf3e0;
+    border: 2px dashed #ccc;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/*
+ * Alt başlık stili
+ * - color ile yazı rengi belirlenir
+ * - margin-bottom ile alt boşluk verilir
+ * - font-size ile yazı boyutu ayarlanır
+ */
+h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+/*
+ * Input alanı container stili
+ * - display: flex ile yatay hizalama yapılır
+ * - gap ile elemanlar arası boşluk ayarlanır
+ * - margin-bottom ile alt boşluk verilir
+ * - padding ile iç boşluk verilir
+ */
+.todo-input {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+/*
+ * Input elementi stili
+ * - flex: 1 ile kalan alanı doldurur
+ * - padding ile iç boşluk verilir
+ * - border ile kenarlık kaldırılır
+ * - border-radius ile köşeler yuvarlatılır
+ * - font-size ile yazı boyutu ayarlanır
+ * - background-color ile arka plan rengi belirlenir
+ * - box-shadow ile gölge efekti verilir
+ */
+.todo-input input {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    background-color: #fff;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/*
+ * Ekle butonu stili
+ * - padding ile iç boşluk verilir
+ * - background-color ile arka plan rengi belirlenir
+ * - color ile yazı rengi belirlenir
+ * - border: none ile kenarlık kaldırılır
+ * - border-radius ile köşeler yuvarlatılır
+ * - cursor: pointer ile üzerine gelince el işareti gösterilir
+ * - transition ile hover efekti için geçiş süresi belirlenir
+ * - font-weight ile yazı kalınlığı ayarlanır
+ */
+.add-btn {
+    padding: 0.8rem 1.5rem;
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+/*
+ * Buton hover efekti
+ * - background-color ile hover durumunda arka plan rengi değiştirilir
+ * - transform ile hover durumunda butonun üzerine doğru kayma efekti verilir
+ */
+.add-btn:hover {
+    background-color: #0097a7;
+    transform: translateY(-2px);
+}
+
+/*
+ * Görev listesi container
+ * - display: flex ile yatay hizalama yapılır
+ * - flex-direction: column ile dikey hizalama yapılır
+ * - gap ile öğeler arası boşluk verilir
+ * - padding ile iç boşluk verilir
+ */
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 0 1rem;
+}
+
+/*
+ * Görev öğesi stili
+ * - display: flex ile yatay hizalama yapılır
+ * - align-items: center ile dikey ortalama yapılır
+ * - justify-content: space-between ile içerik sağa-sola yaslanır
+ * - padding ile iç boşluk verilir
+ * - margin-bottom ile öğeler arası boşluk verilir
+ * - background-color ile arka plan rengi belirlenir
+ * - border-radius ile köşeler yuvarlatılır
+ * - box-shadow ile gölge efekti verilir
+ */
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/*
+ * Görev içeriği stili
+ * - display: flex ile yatay hizalama yapılır
+ * - align-items: center ile dikey ortalama yapılır
+ * - gap ile checkbox ve metin arası boşluk verilir
+ */
+.todo-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/*
+ * Checkbox stili
+ * - width ile genişlik ayarlanır
+ * - height ile yükseklik ayarlanır
+ * - cursor: pointer ile üzerine gelince el işareti gösterilir
+ */
+.todo-content input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/*
+ * Tamamlanmış görev stili
+ * - text-decoration: line-through ile metnin üstü çizilir
+ * - color ile yazı rengi soluklaştırılır
+ */
+.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/*
+ * Silme butonu stili
+ * - padding ile iç boşluk verilir
+ * - background-color ile kırmızı arka plan rengi verilir
+ * - color ile yazı rengi belirlenir
+ * - border: none ile kenarlık kaldırılır
+ * - border-radius ile köşeler yuvarlatılır
+ * - cursor: pointer ile üzerine gelince el işareti gösterilir
+ * - transition ile hover efekti için geçiş süresi belirlenir
+ */
+.remove-btn {
+    padding: 0.5rem 1rem;
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+/*
+ * Silme butonu hover efekti
+ * - background-color ile hover durumunda daha koyu kırmızı renk verilir
+ * - transform ile hover durumunda butonun üzerine doğru kayma efekti verilir
+ */
+.remove-btn:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px);
+}
+
+/*
+ * Responsive tasarım için medya sorguları
+ * - max-width ile maksimum genişlik sınırlanır
+ * - margin ile yatayda ortalama yapılır ve üst-alttan boşluk verilir
+ * - padding ile iç boşluk verilir
+ */
+@media (max-width: 600px) {
+    .todo-container {
+        margin: 1rem;
+        padding: 0.5rem;
+    }
+
+    .todo-card {
+        padding: 1rem;
+    }
+
+    .todo-input {
+        flex-direction: column;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+}

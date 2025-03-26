@@ -1,0 +1,21 @@
+<div class="cart">
+  <h2>Shopping Cart</h2>
+  <div *ngIf="cartItems.length === 0">
+    <p>Your cart is empty.</p>
+  </div>
+  <div *ngIf="cartItems.length > 0">
+    <div *ngFor="let item of cartItems">
+      <app-cart-item [item]="item"></app-cart-item>
+    </div>
+    <p>Total: ${{ totalPrice }}</p>
+
+    <div class="purchase-section">
+      <input type="number" [(ngModel)]="purchaseAmount" placeholder="Enter amount" />
+      <button (click)="purchase()">Purchase</button>
+    </div>
+
+    <div *ngIf="purchaseMessage" [ngClass]="{'success': purchaseSuccess, 'error': !purchaseSuccess}">
+      <p>{{ purchaseMessage }}</p>
+    </div>
+  </div>
+</div>

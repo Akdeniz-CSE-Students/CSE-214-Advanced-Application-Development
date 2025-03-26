@@ -1,0 +1,9 @@
+<div class="cart-item">
+  <span>{{ item.product.name }} (x{{ item.quantity }})</span>
+  <div class="buttons">
+    <button (click)="increase()">+</button>
+    <button (click)="decrease()">-</button>
+    <button (click)="remove()">Remove</button>
+  </div>
+  <span>Subtotal: ${{ item.product.price * item.quantity }}</span>
+</div>

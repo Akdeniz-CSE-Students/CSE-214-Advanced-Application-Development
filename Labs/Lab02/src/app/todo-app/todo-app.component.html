@@ -1,0 +1,32 @@
+<div class="todo-container">
+    <h1>Welcome to the TODO app!</h1>
+
+    <div class="todo-card">
+        <h2>To Do App</h2>
+
+        <div class="todo-input">
+            <input
+                type="text"
+                [(ngModel)]="newTodoText"
+                placeholder="Enter new task"
+            >
+            <button class="add-btn" (click)="addTodo()">Add Task</button>
+        </div>
+
+        <div class="todo-list">
+            <div *ngFor="let todo of todos" class="todo-item">
+                <div class="todo-content">
+                    <input
+                        type="checkbox"
+                        [checked]="todo.completed"
+                        (change)="toggleTodo(todo)"
+                    >
+                    <span [class.completed]="todo.completed">
+                        {{todo.description}}
+                    </span>
+                </div>
+                <button class="remove-btn" (click)="deleteTodo(todo.id)">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
