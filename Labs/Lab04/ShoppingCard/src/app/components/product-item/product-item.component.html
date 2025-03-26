@@ -1,0 +1,167 @@
+<div class="product-card">
+  <div class="product-image">
+    <img [src]="product.image" [alt]="product.name">
+    <div class="overlay">
+      <button class="quick-view">Quick View</button>
+    </div>
+  </div>
+  <div class="product-info">
+    <h3>{{ product.name }}</h3>
+    <p class="description">{{ product.description }}</p>
+    <div class="price-row">
+      <span class="price">${{ product.price }}</span>
+      <button class="add-to-cart" (click)="addToCart()">
+        <i class="fas fa-shopping-cart"></i>
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .overlay {
+  opacity: 1;
+}
+
+.quick-view {
+  padding: 12px 24px;
+  background: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .quick-view {
+  transform: translateY(0);
+}
+
+.quick-view:hover {
+  background: #f8f9fa;
+}
+
+.product-info {
+  padding: 20px;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.description {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 10px 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.add-to-cart {
+  padding: 8px 16px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background: #2980b9;
+}
+
+.add-to-cart i {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .product-image {
+    height: 200px;
+  }
+
+  .product-info {
+    padding: 16px;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  .price {
+    font-size: 1.2rem;
+  }
+}
+</style>
+

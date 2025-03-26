@@ -1,0 +1,105 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
+<!-- * * * * * * * to get started with your project! * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<div class="app-container">
+  <header>
+    <h1>{{ title }}</h1>
+  </header>
+
+  <main class="content">
+    <section class="products-section">
+      <app-product-list></app-product-list>
+    </section>
+    <aside class="cart-section">
+      <app-cart-list></app-cart-list>
+    </aside>
+  </main>
+</div>
+
+<style>
+.app-container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+header {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+}
+
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin: 0;
+  font-size: 2rem;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 24px;
+}
+
+.products-section {
+  min-height: calc(100vh - 200px);
+}
+
+.cart-section {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr 300px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-section {
+    position: static;
+  }
+
+  header {
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
+<router-outlet />
+
+
+
+
+
+
+
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

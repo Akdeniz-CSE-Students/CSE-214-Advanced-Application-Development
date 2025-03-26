@@ -1,0 +1,160 @@
+<div class="product-list">
+  <div class="header">
+    <h2>Our Products</h2>
+    <p class="subtitle">Discover our amazing collection</p>
+  </div>
+
+  <div class="filters">
+    <div class="search-box">
+      <input type="text" placeholder="Search products...">
+      <i class="fas fa-search"></i>
+    </div>
+    <div class="sort-options">
+      <select>
+        <option value="default">Sort by</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="name">Name</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="product-container">
+    <app-product-item
+      *ngFor="let product of products"
+      [product]="product">
+    </app-product-item>
+  </div>
+</div>
+
+<style>
+.product-list {
+  padding: 32px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+h2 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+
+.search-box {
+  flex: 1;
+  position: relative;
+  max-width: 400px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 40px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.search-box i {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+.sort-options select {
+  padding: 12px 24px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sort-options select:hover {
+  border-color: #3498db;
+}
+
+.product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  justify-items: center;
+}
+
+@media (max-width: 1024px) {
+  .product-list {
+    padding: 24px;
+  }
+
+  .product-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-list {
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: none;
+  }
+
+  .product-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+</style>
+
