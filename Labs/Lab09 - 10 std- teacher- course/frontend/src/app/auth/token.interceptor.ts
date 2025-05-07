@@ -3,45 +3,35 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse
+  HttpInterceptor
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService) {}
 
+  /**
+   * Basit kimlik doğrulama tabanlı sistemde interceptor'a gerek yok
+   * Sadece boş bir şekilde istekleri geçiriyoruz
+   */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // JWT token'ı AuthService'den al
-    const token = this.authService.getToken();
-
-    if (token) {
-      // Token varsa, isteğe Authorization header'ı ekle
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-    }
-
-    // İsteği devam ettir ve hata yönetimi ekle
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        // 401 Unauthorized hatası alınırsa, oturumu kapat ve login sayfasına yönlendir
-        if (error.status === 401) {
-          this.authService.logout();
-          this.router.navigate(['/auth/login']);
-        }
-        return throwError(() => error);
-      })
-    );
+    // Artık token'a gerek yok, doğrudan isteği iletiyoruz
+    return next.handle(request);
+    
+    /*
+    // Eski JWT tabanlı kod:
+    // const token = this.authService.getToken();
+    // if (token) {
+    //   request = request.clone({
+    //     setHeaders: {
+    //       Authorization: `Bearer ${token}`
+    //     }
+    //   });
+    // }
+    // return next.handle(request);
+    */
   }
 }
