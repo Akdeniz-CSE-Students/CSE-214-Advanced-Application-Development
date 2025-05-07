@@ -1,0 +1,168 @@
+<div class="student-dashboard-container">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading" class="dashboard-content">
+    <!-- Öğrenci bilgileri -->
+    <mat-card class="student-info-card">
+      <mat-card-header>
+        <mat-card-title>Öğrenci Bilgileri</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="student-details" *ngIf="studentInfo">
+          <p><strong>Ad Soyad:</strong> {{ studentInfo.name }} {{ studentInfo.surname }}</p>
+          <p><strong>Öğrenci Numarası:</strong> {{ studentInfo.studentNumber }}</p>
+          <p><strong>E-posta:</strong> {{ studentInfo.email }}</p>
+          <p><strong>Kayıt Tarihi:</strong> {{ studentInfo.registrationDate | date:'dd.MM.yyyy' }}</p>
+          <p><strong>Danışman:</strong> {{ studentInfo.teacher?.name }} {{ studentInfo.teacher?.surname }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sekme menüsü -->
+    <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" animationDuration="300ms">
+      <!-- Tüm Dersler -->
+      <mat-tab label="Tüm Dersler">
+        <div class="tab-content">
+          <h2>Tüm Dersler</h2>
+          
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" routerLink="/student/add-course">
+              <mat-icon>add</mat-icon> Yeni Ders Ekle
+            </button>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          <div *ngIf="allCourses.length === 0" class="no-data">
+            <p>Henüz hiç ders bulunmamaktadır.</p>
+          </div>
+          
+          <mat-table [dataSource]="allCourses" class="mat-elevation-z5" *ngIf="allCourses.length > 0">
+            <!-- Ders Adı Sütunu -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Ders Adı </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Ders Kodu Sütunu -->
+            <ng-container matColumnDef="code">
+              <mat-header-cell *matHeaderCellDef> Ders Kodu </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.code}} </mat-cell>
+            </ng-container>
+
+            <!-- Açıklama Sütunu -->
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef> Açıklama </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.description}} </mat-cell>
+            </ng-container>
+
+            <!-- Öğretmen Sütunu -->
+            <ng-container matColumnDef="teacher">
+              <mat-header-cell *matHeaderCellDef> Öğretmen </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.teacher?.name}} {{course.teacher?.surname}} </mat-cell>
+            </ng-container>
+
+            <!-- İşlem Sütunu -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> İşlemler </mat-header-cell>
+              <mat-cell *matCellDef="let course">
+                <button mat-icon-button color="primary" (click)="enrollCourse(course.id)">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'code', 'description', 'teacher', 'actions']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'code', 'description', 'teacher', 'actions']"></mat-row>
+          </mat-table>
+        </div>
+      </mat-tab>
+
+      <!-- Bekleyen Dersler -->
+      <mat-tab label="Bekleyen Dersler">
+        <div class="tab-content">
+          <h2>Bekleyen Dersler</h2>
+          
+          <div *ngIf="pendingCourses.length === 0" class="no-data">
+            <p>Bekleyen ders talebiniz bulunmamaktadır.</p>
+          </div>
+          
+          <mat-table [dataSource]="pendingCourses" class="mat-elevation-z5" *ngIf="pendingCourses.length > 0">
+            <!-- Ders Adı Sütunu -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Ders Adı </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Ders Kodu Sütunu -->
+            <ng-container matColumnDef="code">
+              <mat-header-cell *matHeaderCellDef> Ders Kodu </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.code}} </mat-cell>
+            </ng-container>
+
+            <!-- Durum Sütunu -->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef> Durum </mat-header-cell>
+              <mat-cell *matCellDef="let course"> 
+                <mat-chip color="warn">Beklemede</mat-chip>
+              </mat-cell>
+            </ng-container>
+
+            <!-- Öğretmen Sütunu -->
+            <ng-container matColumnDef="teacher">
+              <mat-header-cell *matHeaderCellDef> Öğretmen </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.teacher?.name}} {{course.teacher?.surname}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'code', 'status', 'teacher']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'code', 'status', 'teacher']"></mat-row>
+          </mat-table>
+        </div>
+      </mat-tab>
+
+      <!-- Onaylanan Dersler -->
+      <mat-tab label="Onaylanan Dersler">
+        <div class="tab-content">
+          <h2>Onaylanan Dersler</h2>
+          
+          <div *ngIf="approvedCourses.length === 0" class="no-data">
+            <p>Onaylanan ders kaydınız bulunmamaktadır.</p>
+          </div>
+          
+          <mat-table [dataSource]="approvedCourses" class="mat-elevation-z5" *ngIf="approvedCourses.length > 0">
+            <!-- Ders Adı Sütunu -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Ders Adı </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Ders Kodu Sütunu -->
+            <ng-container matColumnDef="code">
+              <mat-header-cell *matHeaderCellDef> Ders Kodu </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.code}} </mat-cell>
+            </ng-container>
+
+            <!-- Durum Sütunu -->
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef> Durum </mat-header-cell>
+              <mat-cell *matCellDef="let course"> 
+                <mat-chip color="primary">Onaylandı</mat-chip>
+              </mat-cell>
+            </ng-container>
+
+            <!-- Öğretmen Sütunu -->
+            <ng-container matColumnDef="teacher">
+              <mat-header-cell *matHeaderCellDef> Öğretmen </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.teacher?.name}} {{course.teacher?.surname}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'code', 'status', 'teacher']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'code', 'status', 'teacher']"></mat-row>
+          </mat-table>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="login-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Öğrenci-Öğretmen Kurs Yönetim Sistemi</mat-card-title>
+      <mat-card-subtitle>Giriş Yapın</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="user-toggle">
+        <span [class.active]="isStudent" (click)="toggleUserType()">Öğrenci</span>
+        <span [class.active]="!isStudent" (click)="toggleUserType()">Öğretmen</span>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div *ngIf="isStudent">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Öğrenci Numarası</mat-label>
+            <input matInput formControlName="studentNumber" autocomplete="off">
+            <mat-error *ngIf="loginForm.get('studentNumber')?.hasError('required')">
+              Öğrenci numarası gereklidir
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('studentNumber')?.hasError('minlength')">
+              Öğrenci numarası en az 5 karakter olmalıdır
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="!isStudent">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Kullanıcı Adı</mat-label>
+            <input matInput formControlName="username" autocomplete="off">
+            <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+              Kullanıcı adı gereklidir
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Şifre</mat-label>
+            <input matInput formControlName="password" type="password" autocomplete="off">
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+              Şifre gereklidir
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+              Şifre en az 6 karakter olmalıdır
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" class="full-width login-button" 
+                [disabled]="loginForm.invalid || isLoading">
+          <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+          <span *ngIf="!isLoading">Giriş Yap</span>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

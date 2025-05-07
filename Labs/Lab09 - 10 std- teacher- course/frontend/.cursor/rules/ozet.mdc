@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Backend kısmını başarıyla tamamladık! Şimdi bir özet yapalım:
+Model Katmanı:
+User (base sınıf): Tüm kullanıcılar için ortak özellikler (id, username, password, role, name, surname, email)
+Student: User'dan extend edilmiş, öğrenci numarası, kayıt tarihi, öğretmeni ve aldığı dersler
+Teacher: User'dan extend edilmiş, öğretmen ID'si, departmanı, verdiği dersler ve öğrencileri
+Course: Ders id, isim, kod, açıklama, durum (PENDING, APPROVED, REJECTED), öğretmen ve öğrenciler
+Repository Katmanı:
+StudentRepository: JpaRepository'den extend edilmiş, öğrenci numarası ve kullanıcı adına göre arama metotları eklenmiş
+TeacherRepository: JpaRepository'den extend edilmiş, öğretmen ID'si ve kullanıcı adına göre arama metotları eklenmiş
+CourseRepository: JpaRepository'den extend edilmiş, duruma ve öğretmene göre dersleri getiren metotlar eklenmiş
+Service Katmanı:
+StudentService: Öğrenci CRUD işlemleri, öğrencinin derslerini getirme, bekleyen/onaylanmış dersleri filtreleme, ders ekleme
+TeacherService: Öğretmen CRUD işlemleri, atanmış öğrencileri getirme, bekleyen dersleri getirme, ders onaylama/reddetme
+CourseService: Ders CRUD işlemleri, statüye/öğretmene göre ders filtreleme, derse öğrenci ekleme/çıkarma
+Controller Katmanı:
+StudentController: CRUD ve öğrenci-ders ilişkisi için API endpointleri (/api/student/)
+TeacherController: CRUD ve öğretmen-öğrenci, öğretmen-ders ilişkileri için API endpointleri (/api/teacher/)
+CourseController: CRUD ve ders-öğrenci ilişkisi için API endpointleri (/api/courses/)
+AuthController: JWT token tabanlı kimlik doğrulama için giriş endpointleri (/api/auth/login)
+Security Katmanı:
+JwtUtil: JWT token oluşturma, doğrulama, kullanıcı bilgilerini çıkarma
+JwtRequestFilter: Her istek için JWT token'ı doğrulama
+UserDetailsServiceImpl: Kullanıcı adına göre kullanıcı detaylarını yükleme
+SecurityConfig: Güvenlik ayarları, CORS, CSRF, yetkilendirme kuralları
+Exception Handling:
+GlobalExceptionHandler: Tüm kontrol edilebilir hataları düzgün bir şekilde yakalama ve işleme
+ResourceNotFoundException: Kaynak bulunamadığında fırlatılan özel exception
+BusinessException: İş mantığı hatalarında fırlatılan özel exception
+
+Sıradaki adım, Frontend tarafını Angular ile geliştirmektir. Angular projesini oluşturup, gerekli modülleri ve bileşenleri ekleyerek kullanıcı arayüzünü geliştirmek isterseniz, bu kısma başlayabiliriz.

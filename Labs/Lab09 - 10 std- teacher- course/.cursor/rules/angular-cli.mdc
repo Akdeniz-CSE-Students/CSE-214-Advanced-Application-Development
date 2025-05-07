@@ -1,0 +1,311 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: 
+globs: 
+alwaysApply: true
+---
+## Essential Angular CLI Commands for Effective Project Management 
+
+The Angular CLI offers a powerful suite of commands to manage your Angular projects without using standalone components. This ensures adherence to the standard `NgModule` structure, making it easier to maintain modularity and scalability.
+1. **Create a New Angular Project** 
+
+To initiate a new Angular project, use the following command:
+
+
+
+```bash
+ng new my-angular-project
+```
+
+
+This will prompt you to configure key project settings such as routing, styles (CSS, SCSS, etc.), and others, allowing you to tailor the project setup.
+
+2. **Generate a New Component** 
+To generate a new component within your project, which will automatically be added to the closest `NgModule`, run:
+
+
+```bash
+ng generate component component-name --no-standalone
+```
+
+
+Or use the shorthand:
+
+
+
+```bash
+ng g c component-name
+```
+
+This will create the necessary component files (`.ts`, `.html`, `.css`, `.spec.ts`) and register it in the nearest `@NgModule` under the `declarations` array.
+3. **Generate a New Service** 
+
+For services that manage data or business logic, use:
+
+
+
+```bash
+ng generate service service-name
+```
+
+
+Or the shorthand:
+
+
+
+```bash
+ng g s service-name
+```
+
+This will create a service with a `.ts` file. By default, the service will be provided in the root module or component where it is injected.
+4. **Generate a New Module** 
+
+Modules help group related components, directives, pipes, and other elements. To generate a new module, run:
+
+
+
+```bash
+ng generate module module-name
+```
+
+
+Or shorthand:
+
+
+
+```bash
+ng g m module-name
+```
+
+
+This will create the module file and add it to the nearest parent module. You can also specify a custom path if required.
+
+5. **Generate a New Directive** 
+
+Directives are used to add behavior to DOM elements. To generate a new directive, use:
+
+
+
+```bash
+ng generate directive directive-name --no-standalone
+```
+
+
+Or shorthand:
+
+
+
+```bash
+ng g d directive-name
+```
+
+This creates the directive file and adds it to the `declarations` array of the relevant `NgModule`.
+6. **Generate a New Pipe** 
+
+Pipes are used for transforming data in templates. To create a new pipe, use:
+
+
+
+```bash
+ng generate pipe pipe-name --no-standalone
+```
+
+
+Or shorthand:
+
+
+
+```bash
+ng g p pipe-name
+```
+
+This generates a pipe file, ensuring it is added to the `declarations` array of the corresponding `NgModule`.
+7. **Generate a New Class** 
+
+For utility classes, models, or other business logic files, use:
+
+
+
+```bash
+ng generate class class-name
+```
+
+
+Or shorthand:
+
+
+
+```bash
+ng g cl class-name
+```
+
+
+This will generate the specified class file.
+
+8. **Generate a New Interface** 
+
+To generate an interface for type-checking and defining the structure of objects, use:
+
+
+
+```bash
+ng generate interface interface-name
+```
+
+
+Or shorthand:
+
+
+
+```bash
+ng g i interface-name
+```
+
+
+This will create an interface file to define custom types within your application.
+
+9. **Generate a New Enum** 
+
+Enums are useful for defining a set of constants. To create a new enum, use:
+
+
+
+```bash
+ng generate enum enum-name
+```
+
+
+Or shorthand:
+
+
+
+```bash
+ng g e enum-name
+```
+
+
+This will create the enum file, which can then be used to group related values within the application.
+
+10. **Serve the Project Locally** 
+
+To launch the Angular development server and view your application in the browser, use:
+
+
+
+```bash
+ng serve
+```
+
+By default, this will serve the application at `http://localhost:4200/`. You can change the port by adding the `--port` flag:
+
+
+```bash
+ng serve --port 4500
+```
+
+11. **Build the Project for Production** 
+
+To build the Angular project for production (minifying and optimizing the code), run:
+
+
+
+```bash
+ng build --prod
+```
+
+This will create a `dist/` folder containing the production-ready build, ready for deployment.
+12. **Update the Project** 
+
+To keep your Angular project up to date, use:
+
+
+
+```bash
+ng update
+```
+
+
+This command will check for available updates to Angular packages and apply them to your project.
+
+13. **Run Unit Tests** 
+
+To run unit tests using Karma and see results in the terminal, use:
+
+
+
+```bash
+ng test
+```
+
+
+This will run all the unit tests for your application.
+
+14. **Run End-to-End Tests** 
+
+To execute end-to-end tests with Protractor, use:
+
+
+
+```bash
+ng e2e
+```
+
+
+This will simulate user interactions to ensure the overall app functions as expected.
+
+15. **Linting the Project** 
+To check your project for linting errors (based on the rules defined in `tslint.json`), use:
+
+
+```bash
+ng lint
+```
+
+
+This will scan your project files for style and syntax issues according to the defined linting configuration.
+
+16. **Add Dependencies** 
+
+To install and configure new libraries or dependencies in your project, use:
+
+
+
+```bash
+ng add package-name
+```
+
+
+This will install the package and automatically update your Angular project configuration, for example, adding Angular Material or Progressive Web App (PWA) support.
+
+17. **Create a New Environment File** 
+
+For handling different environments like development, production, etc., Angular CLI provides a streamlined way to generate environment files. Use:
+
+
+
+```bash
+ng generate environment environment-name
+```
+
+
+This will create an environment configuration file that can hold variables such as API URLs or authentication keys.
+
+
+
+---
+
+
+
+### Conclusion 
+
+Using Angular CLI commands, you can effectively organize your Angular application by following the `NgModule` structure, which ensures better maintainability and scalability. By utilizing these commands, you streamline your development process, creating a modular, well-structured application that adheres to best practices.
+
+
+---
+
+
+

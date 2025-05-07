@@ -1,0 +1,194 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+You are an expert in Spring Boot, Angular, and full-stack web application development.
+
+### Key Principles
+
+* Write clean, maintainable, and scalable code following best practices.
+* Use RESTful API design for the backend and modular component structure for the frontend.
+* Prioritize security, performance, and user experience.
+* Ensure code is well-documented and follows consistent naming conventions.
+
+---
+
+### Project Overview
+
+* A student-advisor course management system with a Spring Boot backend and Angular frontend.
+* Two user roles: Student and Adviser.
+* Student: Can view all courses, add new courses, view pending courses, and view approved courses.
+* Adviser: Can view their assigned students and approve or reject course requests.
+* Three main pages: Login Page, Student Page, Adviser Page.
+
+---
+
+### Backend (Spring Boot)
+
+#### General Configuration
+
+* Use Spring Boot (latest stable version).
+* Follow a layered architecture: Controller, Service, Repository.
+* Use JPA with Hibernate for ORM.
+* Use MySQL or PostgreSQL for the database.
+* Use Spring Security for authentication (JWT-based).
+* Handle cross-origin requests with CORS configuration.
+
+#### User Management
+
+* Two user roles: STUDENT and ADVISER.
+* Use Role-Based Access Control (RBAC) with Spring Security.
+* Students and advisers are stored in separate tables, linked by relationships.
+
+#### Entity Design
+
+1. **User (Base Entity)**:
+
+   * id (Primary Key)
+   * username (String, Unique)
+   * password (Hashed)
+   * role (Enum: STUDENT, ADVISER)
+
+2. **Student (Extends User)**:
+
+   * studentId (String, Unique)
+   * adviser (Many-to-One, Adviser)
+
+3. **Adviser (Extends User)**:
+
+   * adviserId (String, Unique)
+   * students (One-to-Many, Student)
+
+4. **Course**:
+
+   * id (Primary Key)
+   * name (String)
+   * description (String)
+   * status (Enum: PENDING, APPROVED)
+   * student (Many-to-One, Student)
+   * adviser (Many-to-One, Adviser)
+
+#### Authentication and Authorization
+
+* Use JWT for secure login (username and password).
+* Student login using student ID.
+* Adviser login using username and password.
+* Secure API routes based on roles:
+
+  * `/api/student/**` - Accessible only by STUDENT.
+  * `/api/adviser/**` - Accessible only by ADVISER.
+
+#### API Endpoints
+
+* **AuthController** (for login)
+
+  * `POST /api/auth/login` - Login for both students and advisers.
+
+* **StudentController**:
+
+  * `GET /api/student/courses/all` - Get all available courses.
+  * `POST /api/student/courses/add` - Add a new course (status: PENDING).
+  * `GET /api/student/courses/pending` - Get all pending courses.
+  * `GET /api/student/courses/approved` - Get all approved courses.
+
+* **AdviserController**:
+
+  * `GET /api/adviser/students` - Get list of assigned students.
+  * `GET /api/adviser/courses/pending` - Get all pending course requests.
+  * `POST /api/adviser/courses/approve` - Approve a course for a student.
+
+* **Error Handling**:
+
+  * Use @RestControllerAdvice for centralized exception handling.
+  * Return user-friendly error messages for API errors.
+
+---
+
+### Frontend (Angular)
+
+#### Project Structure
+
+* Use Angular 15+ with TypeScript.
+* Modular structure with separate modules for authentication, student, and adviser.
+* Use Angular Router for page navigation.
+* Use Angular Material for UI components.
+* Use Reactive Forms for form handling.
+
+#### Pages
+
+1. **Login Page**:
+
+   * Login form with two inputs: Student ID (for students) or Username/Password (for advisers).
+   * Redirect to Student or Adviser page based on role after login.
+
+2. **Student Page**:
+
+   * Tabbed layout with three sections:
+
+     * **All Courses**: List of all available courses with a button to add a new course.
+     * **Pending Courses**: List of courses pending approval.
+     * **Approved Courses**: List of approved courses.
+
+3. **Adviser Page**:
+
+   * Two sections:
+
+     * **Student List**: List of assigned students.
+     * **Pending Course Requests**: List of courses awaiting approval with options to approve or reject.
+
+#### UI/UX Design
+
+* Use a clean, responsive layout.
+* Use Angular Material components (e.g., MatTable for course lists).
+* Clear feedback messages for user actions (e.g., course added, course approved).
+* Loading indicators for asynchronous actions.
+
+#### State Management
+
+* Use Angular Services for API communication.
+* Manage user authentication state using Angular’s built-in `AuthService` and JWT storage in LocalStorage.
+
+#### Form Validation
+
+* Use Reactive Forms with validation for login and course addition.
+* Provide clear error messages for invalid inputs.
+
+---
+
+### Security
+
+* Use HTTPS for secure communication.
+* Secure JWT tokens with HttpOnly cookies.
+* Apply role-based access control in both backend (Spring Security) and frontend (Route Guards).
+* Validate all inputs on both client-side (Angular) and server-side (Spring Boot).
+* Implement CSRF protection for API endpoints.
+
+---
+
+### Performance Optimization
+
+* Use lazy loading for Angular modules.
+* Optimize API queries using JPA’s @Query with efficient fetching (e.g., JOIN FETCH).
+* Use pagination for large lists of courses/students.
+* Cache API responses where appropriate.
+
+---
+
+### Testing
+
+* Use JUnit and Mockito for backend unit testing.
+* Use Jasmine and Karma for frontend unit testing.
+* Implement end-to-end testing using Cypress.
+
+---
+
+### Documentation
+
+* Use Swagger UI for API documentation in Spring Boot.
+* Comment all key sections of code.
+* Provide a README.md file with setup instructions.
+
+---
+
+
