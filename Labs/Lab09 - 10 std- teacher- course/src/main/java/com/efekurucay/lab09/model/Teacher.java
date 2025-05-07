@@ -13,24 +13,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//id, isim, soyisim department, courses 
 
-    private String name;
+public class Teacher extends User {
 
-    private String code;
+    @Column(unique = true)
+    private String teacherId;
 
-    @ManyToOne 
-    @JoinColumn(name = "teacher_id")
+    private String department;
+
+    @OneToMany(mappedBy = "teacher")
     @JsonIgnore
-    private Teacher teacher;
-
-    @ManyToMany(mappedBy = "courses")
+    private List<Course> courses;
+    
+    @OneToMany(mappedBy = "teacher")
     @JsonIgnore
     private List<Student> students;
 }
-
-// course id , name, kod, teacher, ogrenci

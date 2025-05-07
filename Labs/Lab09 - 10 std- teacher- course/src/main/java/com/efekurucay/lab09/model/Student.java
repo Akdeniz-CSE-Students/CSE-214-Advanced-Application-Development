@@ -12,30 +12,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+public class Student extends User {
 
-// id (pk), name, surname, email(unique)  , st id ,kayit tarihi, kurslar (course id)
-
-public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String surname;
     @Column(unique = true)
-    private String email;
-
     private String studentNumber;
 
     private LocalDate registrationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
     @ManyToMany
-    
     @JoinTable(
         name = "student_course",
         joinColumns = @JoinColumn(name = "student_id"),
         inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    
     private List<Course> courses;
 }
