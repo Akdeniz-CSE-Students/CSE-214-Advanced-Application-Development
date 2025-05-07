@@ -1,1 +1,55 @@
-<p>add-course works!</p>
+<div class="add-course-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Yeni Ders Ekle</mat-card-title>
+      <mat-card-subtitle>Ders bilgilerini girerek öğretmen onayı için talep oluşturun</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Ders Adı</mat-label>
+          <input matInput formControlName="name" autocomplete="off">
+          <mat-error *ngIf="courseForm.get('name')?.hasError('required')">
+            Ders adı gereklidir
+          </mat-error>
+          <mat-error *ngIf="courseForm.get('name')?.hasError('minlength')">
+            Ders adı en az 3 karakter olmalıdır
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Ders Kodu</mat-label>
+          <input matInput formControlName="code" autocomplete="off">
+          <mat-error *ngIf="courseForm.get('code')?.hasError('required')">
+            Ders kodu gereklidir
+          </mat-error>
+          <mat-error *ngIf="courseForm.get('code')?.hasError('minlength')">
+            Ders kodu en az 3 karakter olmalıdır
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Açıklama</mat-label>
+          <textarea matInput formControlName="description" rows="5"></textarea>
+          <mat-error *ngIf="courseForm.get('description')?.hasError('required')">
+            Açıklama gereklidir
+          </mat-error>
+          <mat-error *ngIf="courseForm.get('description')?.hasError('minlength')">
+            Açıklama en az 10 karakter olmalıdır
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-buttons">
+          <button mat-raised-button type="button" routerLink="/student/dashboard">
+            İptal
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="courseForm.invalid || isLoading">
+            <mat-spinner *ngIf="isLoading" diameter="20" class="button-spinner"></mat-spinner>
+            <span *ngIf="!isLoading">Ders Ekle</span>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

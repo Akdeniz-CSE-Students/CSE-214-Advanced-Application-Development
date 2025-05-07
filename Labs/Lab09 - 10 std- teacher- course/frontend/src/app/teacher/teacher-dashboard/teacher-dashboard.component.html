@@ -1,1 +1,133 @@
-<p>teacher-dashboard works!</p>
+<div class="teacher-dashboard-container">
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading" class="dashboard-content">
+    <!-- Öğretmen bilgileri -->
+    <mat-card class="teacher-info-card">
+      <mat-card-header>
+        <mat-card-title>Öğretmen Bilgileri</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="teacher-details" *ngIf="teacherInfo">
+          <p><strong>Ad Soyad:</strong> {{ teacherInfo.name }} {{ teacherInfo.surname }}</p>
+          <p><strong>Öğretmen ID:</strong> {{ teacherInfo.teacherId }}</p>
+          <p><strong>E-posta:</strong> {{ teacherInfo.email }}</p>
+          <p><strong>Bölüm:</strong> {{ teacherInfo.department }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Sekme menüsü -->
+    <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" animationDuration="300ms">
+      <!-- Atanmış Öğrenciler -->
+      <mat-tab label="Atanmış Öğrenciler">
+        <div class="tab-content">
+          <h2>Atanmış Öğrenciler</h2>
+          
+          <div *ngIf="assignedStudents.length === 0" class="no-data">
+            <p>Henüz size atanmış öğrenci bulunmamaktadır.</p>
+          </div>
+          
+          <mat-table [dataSource]="assignedStudents" class="mat-elevation-z5" *ngIf="assignedStudents.length > 0">
+            <!-- Öğrenci Numarası Sütunu -->
+            <ng-container matColumnDef="studentNumber">
+              <mat-header-cell *matHeaderCellDef> Öğrenci Numarası </mat-header-cell>
+              <mat-cell *matCellDef="let student"> {{student.studentNumber}} </mat-cell>
+            </ng-container>
+
+            <!-- Öğrenci Adı Sütunu -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Adı Soyadı </mat-header-cell>
+              <mat-cell *matCellDef="let student"> {{student.name}} {{student.surname}} </mat-cell>
+            </ng-container>
+
+            <!-- E-posta Sütunu -->
+            <ng-container matColumnDef="email">
+              <mat-header-cell *matHeaderCellDef> E-posta </mat-header-cell>
+              <mat-cell *matCellDef="let student"> {{student.email}} </mat-cell>
+            </ng-container>
+
+            <!-- Kayıt Tarihi Sütunu -->
+            <ng-container matColumnDef="registrationDate">
+              <mat-header-cell *matHeaderCellDef> Kayıt Tarihi </mat-header-cell>
+              <mat-cell *matCellDef="let student"> {{student.registrationDate | date:'dd.MM.yyyy'}} </mat-cell>
+            </ng-container>
+
+            <!-- İşlem Sütunu -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> İşlemler </mat-header-cell>
+              <mat-cell *matCellDef="let student">
+                <button mat-icon-button color="primary" (click)="viewStudentDetails(student.id)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['studentNumber', 'name', 'email', 'registrationDate', 'actions']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['studentNumber', 'name', 'email', 'registrationDate', 'actions']"></mat-row>
+          </mat-table>
+        </div>
+      </mat-tab>
+
+      <!-- Bekleyen Ders Talepleri -->
+      <mat-tab label="Bekleyen Ders Talepleri">
+        <div class="tab-content">
+          <h2>Bekleyen Ders Talepleri</h2>
+          
+          <div *ngIf="pendingCourses.length === 0" class="no-data">
+            <p>Bekleyen ders talebi bulunmamaktadır.</p>
+          </div>
+          
+          <mat-table [dataSource]="pendingCourses" class="mat-elevation-z5" *ngIf="pendingCourses.length > 0">
+            <!-- Ders Adı Sütunu -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Ders Adı </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Ders Kodu Sütunu -->
+            <ng-container matColumnDef="code">
+              <mat-header-cell *matHeaderCellDef> Ders Kodu </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.code}} </mat-cell>
+            </ng-container>
+
+            <!-- Açıklama Sütunu -->
+            <ng-container matColumnDef="description">
+              <mat-header-cell *matHeaderCellDef> Açıklama </mat-header-cell>
+              <mat-cell *matCellDef="let course"> {{course.description}} </mat-cell>
+            </ng-container>
+
+            <!-- Öğrenci Sütunu -->
+            <ng-container matColumnDef="student">
+              <mat-header-cell *matHeaderCellDef> Öğrenci </mat-header-cell>
+              <mat-cell *matCellDef="let course"> 
+                <ng-container *ngIf="course.students && course.students.length > 0">
+                  {{course.students[0].name}} {{course.students[0].surname}} 
+                  ({{course.students[0].studentNumber}})
+                </ng-container>
+              </mat-cell>
+            </ng-container>
+
+            <!-- İşlem Sütunu -->
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> İşlemler </mat-header-cell>
+              <mat-cell *matCellDef="let course">
+                <button mat-icon-button color="primary" (click)="approveCourse(course.id)" matTooltip="Onayla">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="rejectCourse(course.id)" matTooltip="Reddet">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['name', 'code', 'description', 'student', 'actions']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['name', 'code', 'description', 'student', 'actions']"></mat-row>
+          </mat-table>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

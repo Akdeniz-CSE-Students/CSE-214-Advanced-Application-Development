@@ -1,0 +1,93 @@
+.teacher-dashboard-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.dashboard-content {
+  margin-top: 20px;
+}
+
+.teacher-info-card {
+  margin-bottom: 20px;
+}
+
+.teacher-details {
+  padding: 10px;
+  
+  p {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+}
+
+mat-tab-group {
+  margin-top: 30px;
+}
+
+.tab-content {
+  padding: 20px;
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #3f51b5;
+  }
+}
+
+.no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  
+  p {
+    color: #666;
+    font-style: italic;
+  }
+}
+
+mat-table {
+  margin-top: 20px;
+}
+
+.mat-column-studentNumber {
+  flex: 0 0 15%;
+}
+
+.mat-column-name {
+  flex: 0 0 20%;
+}
+
+.mat-column-email {
+  flex: 0 0 25%;
+}
+
+.mat-column-registrationDate {
+  flex: 0 0 15%;
+}
+
+.mat-column-code {
+  flex: 0 0 15%;
+}
+
+.mat-column-description {
+  flex: 0 0 25%;
+}
+
+.mat-column-student {
+  flex: 0 0 25%;
+}
+
+.mat-column-actions {
+  flex: 0 0 10%;
+  justify-content: center;
+}

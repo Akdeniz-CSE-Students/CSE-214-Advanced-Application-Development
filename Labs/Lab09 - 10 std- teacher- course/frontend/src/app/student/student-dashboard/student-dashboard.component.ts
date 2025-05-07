@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Student } from '../../models/student';
 import { Course } from '../../models/course';
 import { CourseStatus } from '../../models/course-status';
@@ -23,7 +24,8 @@ export class StudentDashboardComponent implements OnInit {
 
   constructor(
     private studentService: StudentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -38,11 +40,11 @@ export class StudentDashboardComponent implements OnInit {
     
     if (studentId) {
       this.studentService.getStudentById(studentId).subscribe({
-        next: (student) => {
+        next: (student: Student) => {
           this.studentInfo = student;
           this.isLoading = false;
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Öğrenci bilgileri yüklenirken hata oluştu:', error);
           this.isLoading = false;
         }
@@ -52,12 +54,12 @@ export class StudentDashboardComponent implements OnInit {
 
   loadAllCourses(): void {
     this.isLoading = true;
-    this.studentService.getAllCourses().subscribe({
-      next: (courses) => {
+    this.studentService.getAllAvailableCourses().subscribe({
+      next: (courses: Course[]) => {
         this.allCourses = courses;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Kurslar yüklenirken hata oluştu:', error);
         this.isLoading = false;
       }
@@ -70,25 +72,40 @@ export class StudentDashboardComponent implements OnInit {
     
     if (studentId) {
       // Bekleyen kursları yükle
-      this.studentService.getStudentCoursesByStatus(studentId, CourseStatus.PENDING).subscribe({
-        next: (courses) => {
-          this.pendingCourses = courses;
+      this.studentService.getStudentCourses(studentId).subscribe({
+        next: (courses: Course[]) => {
+          // Kursları durumlarına göre ayır
+          this.pendingCourses = courses.filter(course => course.status === CourseStatus.PENDING);
+          this.approvedCourses = courses.filter(course => course.status === CourseStatus.APPROVED);
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Bekleyen kurslar yüklenirken hata oluştu:', error);
+        error: (error: any) => {
+          console.error('Öğrenci kursları yüklenirken hata oluştu:', error);
           this.isLoading = false;
         }
       });
+    }
+  }
 
-      // Onaylanan kursları yükle
-      this.studentService.getStudentCoursesByStatus(studentId, CourseStatus.APPROVED).subscribe({
-        next: (courses) => {
-          this.approvedCourses = courses;
+  enrollCourse(courseId?: number): void {
+    if (!courseId) {
+      this.snackBar.open('Geçersiz kurs ID\'si!', 'Tamam', { duration: 3000 });
+      return;
+    }
+    
+    const studentId = this.authService.currentUserValue?.id;
+    
+    if (studentId) {
+      this.isLoading = true;
+      this.studentService.enrollCourse(studentId, courseId).subscribe({
+        next: () => {
+          this.snackBar.open('Kursa kayıt isteği gönderildi!', 'Tamam', { duration: 3000 });
+          this.loadStudentCourses(); // Kursları yeniden yükle
           this.isLoading = false;
         },
-        error: (error) => {
-          console.error('Onaylanan kurslar yüklenirken hata oluştu:', error);
+        error: (error: any) => {
+          console.error('Kursa kayıt olurken hata oluştu:', error);
+          this.snackBar.open('Kursa kayıt olurken bir hata oluştu!', 'Tamam', { duration: 3000 });
           this.isLoading = false;
         }
       });

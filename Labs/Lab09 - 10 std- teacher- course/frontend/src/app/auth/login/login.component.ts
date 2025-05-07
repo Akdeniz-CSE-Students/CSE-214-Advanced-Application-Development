@@ -29,12 +29,12 @@ export class LoginComponent implements OnInit {
     // Öğrenci ve öğretmen formları için farklı doğrulama kuralları
     if (this.isStudent) {
       this.loginForm = this.fb.group({
-        studentNumber: ['', [Validators.required, Validators.minLength(5)]]
+        studentNumber: ['', [Validators.required, Validators.minLength(4)]]
       });
     } else {
       this.loginForm = this.fb.group({
         username: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.minLength(6)]]
+        password: ['', [Validators.required, Validators.minLength(4)]]
       });
     }
   }
@@ -56,18 +56,22 @@ export class LoginComponent implements OnInit {
 
     if (this.isStudent) {
       const studentNumber = this.loginForm.get('studentNumber')?.value;
-      // Öğrenci girişi - studentNumber kullanarak giriş yap
-      this.authService.login(studentNumber, studentNumber) // Backend'de studentNumber, password olarak da kullanılabilir
+      // Öğrenci numarasına göre giriş
+      console.log('Öğrenci girişi deneniyor:', studentNumber);
+      
+      // Öğrenci numarası username olarak, şifre olarak da öğrenci numarası gönderilir
+      this.authService.login(studentNumber, studentNumber)
         .subscribe({
-          next: () => {
+          next: (response) => {
+            console.log('Giriş başarılı:', response);
             this.isLoading = false;
             // Öğrenci sayfasına yönlendir
             this.router.navigate(['/student/dashboard']);
           },
           error: (err) => {
-            this.isLoading = false;
-            this.errorMessage = 'Geçersiz öğrenci numarası. Lütfen tekrar deneyin.';
             console.error('Giriş hatası:', err);
+            this.isLoading = false;
+            this.errorMessage = err.message || 'Geçersiz öğrenci numarası. Lütfen tekrar deneyin.';
           }
         });
     } else {
@@ -75,17 +79,19 @@ export class LoginComponent implements OnInit {
       const username = this.loginForm.get('username')?.value;
       const password = this.loginForm.get('password')?.value;
       
+      console.log('Öğretmen girişi deneniyor:', username);
       this.authService.login(username, password)
         .subscribe({
-          next: () => {
+          next: (response) => {
+            console.log('Giriş başarılı:', response);
             this.isLoading = false;
             // Öğretmen sayfasına yönlendir
             this.router.navigate(['/teacher/dashboard']);
           },
           error: (err) => {
-            this.isLoading = false;
-            this.errorMessage = 'Geçersiz kullanıcı adı veya şifre. Lütfen tekrar deneyin.';
             console.error('Giriş hatası:', err);
+            this.isLoading = false;
+            this.errorMessage = err.message || 'Geçersiz kullanıcı adı veya şifre. Lütfen tekrar deneyin.';
           }
         });
     }

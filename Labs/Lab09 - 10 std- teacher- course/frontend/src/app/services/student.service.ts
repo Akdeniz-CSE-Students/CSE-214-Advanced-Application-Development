@@ -53,8 +53,21 @@ export class StudentService {
     return this.http.get<Course[]>(`${this.apiUrl}/courses/approved?studentId=${studentId}`);
   }
 
+  // Tüm mevcut dersleri getir (öğrencinin kaydolabileceği dersler)
+  getAllAvailableCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.apiUrl}/courses/available`);
+  }
+
   // Öğrenci için yeni ders ekle
   addCourse(studentId: number, course: Course): Observable<Course> {
     return this.http.post<Course>(`${this.apiUrl}/courses/add?studentId=${studentId}`, course);
+  }
+  
+  // Mevcut bir derse kayıt ol
+  enrollCourse(studentId: number, courseId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/courses/enroll`, {
+      studentId: studentId,
+      courseId: courseId
+    });
   }
 } 
