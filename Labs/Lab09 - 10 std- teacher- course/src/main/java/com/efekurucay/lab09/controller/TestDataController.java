@@ -7,16 +7,21 @@ import com.efekurucay.lab09.model.User;
 import com.efekurucay.lab09.repository.CourseRepository;
 import com.efekurucay.lab09.repository.StudentRepository;
 import com.efekurucay.lab09.repository.TeacherRepository;
+import com.efekurucay.lab09.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/test")
@@ -32,16 +37,98 @@ public class TestDataController {
     private CourseRepository courseRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/add-data")
-    public ResponseEntity<String> addTestData() {
-        try {
-            // Önce mevcut verileri temizle
-            courseRepository.deleteAll();
-            studentRepository.deleteAll();
-            teacherRepository.deleteAll();
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Object>> checkStatus() {
+        Map<String, Object> status = new HashMap<>();
+        
+        List<User> users = userRepository.findAll();
+        List<Student> students = studentRepository.findAll();
+        List<Teacher> teachers = teacherRepository.findAll();
+        List<Course> courses = courseRepository.findAll();
+        
+        status.put("totalUsers", users.size());
+        status.put("totalStudents", students.size());
+        status.put("totalTeachers", teachers.size());
+        status.put("totalCourses", courses.size());
+        
+        status.put("users", users);
+        status.put("students", students);
+        status.put("teachers", teachers);
+        
+        return ResponseEntity.ok(status);
+    }
+    
+    @PostMapping("/add-test-user")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> addTestUser() {
+        // Önce kullanıcıların var olup olmadığını kontrol et
+        Optional<Teacher> existingTeacher = teacherRepository.findByUsername("test_teacher");
+        Optional<Student> existingStudent = studentRepository.findByUsername("test_student");
+        
+        Teacher teacher;
+        if (existingTeacher.isPresent()) {
+            teacher = existingTeacher.get();
+            System.out.println("Test öğretmen zaten mevcut: " + teacher.getUsername());
+        } else {
+            teacher = new Teacher();
+            teacher.setUsername("test_teacher");
+            teacher.setPassword(passwordEncoder.encode("1234"));
+            teacher.setName("Test");
+            teacher.setSurname("Teacher");
+            teacher.setEmail("test.teacher@example.com");
+            teacher.setRole(User.Role.TEACHER);
+            teacher.setTeacherId("T999");
+            teacher.setDepartment("Test Department");
+            
+            teacher = teacherRepository.save(teacher);
+            System.out.println("Test öğretmen oluşturuldu: " + teacher.getUsername());
+        }
+        
+        Student student;
+        if (existingStudent.isPresent()) {
+            student = existingStudent.get();
+            System.out.println("Test öğrenci zaten mevcut: " + student.getUsername());
+        } else {
+            student = new Student();
+            student.setUsername("test_student");
+            student.setPassword(passwordEncoder.encode("S999"));
+            student.setName("Test");
+            student.setSurname("Student");
+            student.setEmail("test.student@example.com");
+            student.setRole(User.Role.STUDENT);
+            student.setStudentNumber("S999");
+            student.setRegistrationDate(LocalDate.now());
+            student.setTeacher(teacher);
+            
+            student = studentRepository.save(student);
+            System.out.println("Test öğrenci oluşturuldu: " + student.getUsername());
+        }
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Test kullanıcıları hazır");
+        response.put("teacher", teacher);
+        response.put("student", student);
+        
+        return ResponseEntity.ok(response);
+    }
 
+    @PostMapping("/add")
+    @Transactional
+    public ResponseEntity<?> addTestData() {
+        try {
+            // Veri var mı kontrol et
+            if (teacherRepository.count() > 0 || studentRepository.count() > 0 || courseRepository.count() > 0) {
+                System.out.println("Veritabanında zaten kayıtlar var. Yeni kayıt eklenmedi.");
+                return ResponseEntity.ok("Veritabanı mevcut kayıtları korundu, yeni kayıt eklenmedi.");
+            }
+            
+            System.out.println("Veritabanı boş, test verileri yükleniyor...");
+            
             // 1. Öğretmenleri ekle (şifre: 1234)
             Teacher teacher1 = new Teacher();
             teacher1.setUsername("teacher1");

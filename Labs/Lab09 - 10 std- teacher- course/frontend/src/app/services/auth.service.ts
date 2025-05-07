@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, BehaviorSubject, tap, catchError, throwError } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,22 @@ export class AuthService {
   private apiUrl = environment.apiUrl + '/api/auth';
   private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   public currentUser: Observable<User | null> = this.currentUserSubject.asObservable();
+  private isBrowser: boolean;
 
-  constructor(private http: HttpClient) {
-    // LocalStorage'dan kullanıcı bilgisini yükle
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    // LocalStorage'dan kullanıcı bilgisini yükle (sadece tarayıcıda)
     this.loadUserFromStorage();
   }
 
   private loadUserFromStorage(): void {
+    if (!this.isBrowser) {
+      return; // Server tarafında çalışıyorsa işlem yapma
+    }
+
     try {
       const user = localStorage.getItem('currentUser');
       if (user) {
@@ -42,8 +52,8 @@ export class AuthService {
         tap(response => {
           console.log('Giriş başarılı:', response);
           
-          if (response) {
-            // Kullanıcı bilgilerini sakla
+          if (response && this.isBrowser) {
+            // Kullanıcı bilgilerini sakla (sadece tarayıcıda)
             localStorage.setItem('currentUser', JSON.stringify(response));
             this.currentUserSubject.next(response);
           }
@@ -67,7 +77,9 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
+    if (this.isBrowser) {
+      localStorage.removeItem('currentUser');
+    }
     this.currentUserSubject.next(null);
   }
 

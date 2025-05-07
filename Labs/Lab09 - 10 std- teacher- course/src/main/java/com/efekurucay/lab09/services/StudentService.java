@@ -95,4 +95,27 @@ public class StudentService {
         
         return savedCourse;
     }
+    
+    // Mevcut bir derse kayıt ol
+    public Course enrollCourse(Long studentId, Long courseId) {
+        Student student = getStudentById(studentId);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Ders bulunamadı: " + courseId));
+        
+        // Öğrencinin zaten bu derse kayıtlı olup olmadığını kontrol et
+        if (student.getCourses().contains(course)) {
+            throw new RuntimeException("Öğrenci zaten bu derse kayıtlı: " + course.getName());
+        }
+        
+        // Dersi PENDING durumunda ekle
+        course.setStatus(Course.CourseStatus.PENDING);
+        
+        // Öğrenci-ders ilişkisini güncelle
+        List<Course> courses = student.getCourses();
+        courses.add(course);
+        student.setCourses(courses);
+        studentRepository.save(student);
+        
+        return course;
+    }
 }

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class Student extends User {
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
+    @JsonIgnoreProperties({"students", "courses", "password"})
     private Teacher teacher;
 
     @ManyToMany
@@ -29,5 +32,6 @@ public class Student extends User {
         joinColumns = @JoinColumn(name = "student_id"),
         inverseJoinColumns = @JoinColumn(name = "course_id")
     )
+    @JsonIgnoreProperties({"students", "teacher"})
     private List<Course> courses;
 }

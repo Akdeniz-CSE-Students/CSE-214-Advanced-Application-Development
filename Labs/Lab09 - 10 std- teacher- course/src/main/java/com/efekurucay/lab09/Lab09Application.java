@@ -20,9 +20,19 @@ public class Lab09Application {
 	@Bean
 	public CommandLineRunner initDataLoader() {
 		return args -> {
-			System.out.println("Uygulama başlatıldı, test verileri yükleniyor...");
-			testDataController.addTestData();
-			System.out.println("Test verileri yüklendi!");
+			try {
+				System.out.println("Uygulama başlatıldı, test verileri kontrol ediliyor...");
+				// Veri durumunu kontrol et
+				testDataController.checkStatus();
+				// Uygulamayı durdurmadan test verilerini yüklemeyi dene
+				testDataController.addTestData();
+				System.out.println("Test verileri işlemi tamamlandı!");
+			} catch (Exception e) {
+				// Hata oluşursa sadece logla, uygulamanın başlamasını engelleme
+				System.err.println("Test verileri yüklenirken hata oluştu: " + e.getMessage());
+				e.printStackTrace();
+				System.out.println("Uygulama hataya rağmen başlatılıyor...");
+			}
 		};
 	}
 }

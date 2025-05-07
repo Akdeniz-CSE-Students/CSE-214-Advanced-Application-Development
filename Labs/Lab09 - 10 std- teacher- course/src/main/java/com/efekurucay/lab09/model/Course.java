@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data
@@ -30,11 +31,11 @@ public class Course {
 
     @ManyToOne 
     @JoinColumn(name = "teacher_id")
-    @JsonIgnore
+    @JsonIgnoreProperties({"courses", "students", "password"})
     private Teacher teacher;
 
     @ManyToMany(mappedBy = "courses")
-    @JsonIgnore
+    @JsonIgnoreProperties({"courses", "password", "teacher"})
     private List<Student> students;
     
     // Kurs durumu için enum

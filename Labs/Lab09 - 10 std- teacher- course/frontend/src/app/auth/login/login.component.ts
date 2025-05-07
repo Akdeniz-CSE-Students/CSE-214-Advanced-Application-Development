@@ -56,19 +56,24 @@ export class LoginComponent implements OnInit {
 
     if (this.isStudent) {
       const studentNumber = this.loginForm.get('studentNumber')?.value;
-      // Öğrenci giriş denemesi (Kullanıcı adı ve şifre aynı)
+      console.log('Öğrenci girişi deneniyor:', studentNumber);
+      
+      // Öğrenci giriş denemesi - öğrenci numarası ve aynı şifre
       this.login(studentNumber, studentNumber);
     } else {
       // Öğretmen girişi
       const username = this.loginForm.get('username')?.value;
       const password = this.loginForm.get('password')?.value;
-      this.login(username, password);
+      console.log('Öğretmen girişi deneniyor:', username);
+      
+      // Test modu - öğretmenler için default şifre: 1234
+      this.login(username, password || '1234');
     }
   }
 
-  // Basitleştirilmiş login işlemi
+  // Basitleştirilmiş login işlemi 
   private login(username: string, password: string): void {
-    console.log('Giriş deneniyor:', username);
+    console.log('Login gönderiliyor:', username, password);
     
     this.authService.login(username, password)
       .subscribe({
@@ -89,7 +94,9 @@ export class LoginComponent implements OnInit {
         error: (err) => {
           console.error('Giriş hatası:', err);
           this.isLoading = false;
-          this.errorMessage = 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.';
+          
+          // Kullanıcı dostu hata mesajı
+          this.errorMessage = err.message || 'Giriş yapılamadı. Lütfen bilgilerinizi kontrol ediniz.';
         }
       });
   }

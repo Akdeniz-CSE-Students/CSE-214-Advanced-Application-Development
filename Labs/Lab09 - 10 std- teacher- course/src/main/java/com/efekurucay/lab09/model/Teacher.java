@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Data
@@ -24,10 +25,10 @@ public class Teacher extends User {
     private String department;
 
     @OneToMany(mappedBy = "teacher")
-    @JsonIgnore
+    @JsonIgnoreProperties({"teacher", "students"})
     private List<Course> courses;
     
     @OneToMany(mappedBy = "teacher")
-    @JsonIgnore
+    @JsonIgnoreProperties({"teacher", "courses"})
     private List<Student> students;
 }
