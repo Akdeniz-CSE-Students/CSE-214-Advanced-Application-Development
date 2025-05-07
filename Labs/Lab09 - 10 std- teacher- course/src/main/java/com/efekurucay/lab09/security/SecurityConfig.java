@@ -33,10 +33,8 @@ public class SecurityConfig {
             .cors().and()
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/student/**").hasRole("STUDENT")
-                .requestMatchers("/api/teacher/**").hasRole("TEACHER")
-                .anyRequest().authenticated()
+                // Tüm isteklere izin ver (test için)
+                .requestMatchers("/**").permitAll()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

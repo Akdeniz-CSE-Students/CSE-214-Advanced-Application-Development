@@ -4,49 +4,30 @@
   align-items: center;
   height: 100vh;
   background-color: #f5f5f5;
-}
+  
+  mat-card {
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    
+    mat-card-header {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-mat-card {
-  width: 400px;
-  max-width: 90%;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
+      mat-card-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
 
-mat-card-header {
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-mat-card-title, mat-card-subtitle {
-  text-align: center;
-}
-
-.user-toggle {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid #ddd;
-}
-
-.user-toggle span {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.user-toggle span.active {
-  background-color: #3f51b5;
-  color: white;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
+      mat-card-subtitle {
+        font-size: 16px;
+        text-align: center;
+      }
+    }
+  }
 }
 
 .full-width {
@@ -54,21 +35,53 @@ mat-card-title, mat-card-subtitle {
   margin-bottom: 15px;
 }
 
-.error-message {
-  background-color: #ffebee;
-  color: #d32f2f;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  font-size: 14px;
+.user-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  
+  span {
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    transition: all 0.3s ease;
+    
+    &.active {
+      background-color: #3f51b5;
+      color: white;
+    }
+  }
+}
+
+.login-form {
+  padding: 20px 0;
 }
 
 .login-button {
   height: 45px;
+  margin-top: 20px;
   font-size: 16px;
 }
 
+.error-message {
+  color: #f44336;
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgba(244, 67, 54, 0.1);
+  text-align: center;
+}
+
 .button-spinner {
-  display: inline-block;
-  margin-right: 10px;
+  margin: 0 auto;
+}
+
+.hint-text {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-top: 5px;
+  font-style: italic;
 }

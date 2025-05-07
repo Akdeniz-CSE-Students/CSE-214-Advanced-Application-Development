@@ -1,8 +1,10 @@
 <div class="login-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Öğrenci-Öğretmen Kurs Yönetim Sistemi</mat-card-title>
-      <mat-card-subtitle>Giriş Yapın</mat-card-subtitle>
+      <mat-card-title>Giriş Yap</mat-card-title>
+      <mat-card-subtitle>
+        Öğrenci ve Öğretmen Kurs Yönetim Sistemi
+      </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -12,6 +14,7 @@
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Öğrenci Girişi -->
         <div *ngIf="isStudent">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Öğrenci Numarası</mat-label>
@@ -19,12 +22,12 @@
             <mat-error *ngIf="loginForm.get('studentNumber')?.hasError('required')">
               Öğrenci numarası gereklidir
             </mat-error>
-            <mat-error *ngIf="loginForm.get('studentNumber')?.hasError('minlength')">
-              Öğrenci numarası en az 5 karakter olmalıdır
-            </mat-error>
           </mat-form-field>
+
+          <p class="hint-text">Örnek öğrenci numaraları: S001, S002, S003</p>
         </div>
 
+        <!-- Öğretmen Girişi -->
         <div *ngIf="!isStudent">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Kullanıcı Adı</mat-label>
@@ -40,10 +43,9 @@
             <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
               Şifre gereklidir
             </mat-error>
-            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-              Şifre en az 6 karakter olmalıdır
-            </mat-error>
           </mat-form-field>
+
+          <p class="hint-text">Örnek öğretmen: teacher1, şifre: 1234</p>
         </div>
 
         <div *ngIf="errorMessage" class="error-message">
